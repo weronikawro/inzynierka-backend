@@ -226,7 +226,7 @@ app.post("/api/auth/forgot-password", async (req, res) => {
     const resetLink = `${frontendUrl}/?page=reset-password&token=${token}`;
 
     await transporter.sendMail({
-      from: `"Diet App" <${process.env.EMAIL_USER}>`,
+      from: '"Diet App" <weronika.wiktoria.wroblewska@gmail.com>',
       to: email,
       subject: "Reset hasła - Aplikacja do zarządzania dietą",
       html: getResetEmailTemplate(resetLink),
@@ -722,7 +722,7 @@ app.post("/api/auth/forgot-password-admin", async (req, res) => {
     const resetLink = `${frontendUrl}/?page=reset-password&token=${token}`;
 
     await transporter.sendMail({
-      from: `"Admin Panel" <${process.env.EMAIL_USER}>`,
+      from: '"Admin Panel" <weronika.wiktoria.wroblewska@gmail.com>',
       to: email,
       subject:
         "Reset hasła (Panel Administratora) - Aplikacja do zarządzania dietą",
