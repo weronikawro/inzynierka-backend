@@ -29,15 +29,12 @@ const MONGO_URL = process.env.MONGO_URL;
 const DB_NAME = "dietApp";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  host: "smtp-relay.brevo.com",
+  port: 2525,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
   },
 });
 
@@ -229,7 +226,7 @@ app.post("/api/auth/forgot-password", async (req, res) => {
     const resetLink = `${frontendUrl}/?page=reset-password&token=${token}`;
 
     await transporter.sendMail({
-      from: '"Diet App" <system@dietapp.com>',
+      from: `"Diet App" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Reset hasła - Aplikacja do zarządzania dietą",
       html: getResetEmailTemplate(resetLink),
@@ -725,7 +722,7 @@ app.post("/api/auth/forgot-password-admin", async (req, res) => {
     const resetLink = `${frontendUrl}/?page=reset-password&token=${token}`;
 
     await transporter.sendMail({
-      from: '"Admin Panel" <system@dietapp.com>',
+      from: `"Admin Panel" <${process.env.EMAIL_USER}>`,
       to: email,
       subject:
         "Reset hasła (Panel Administratora) - Aplikacja do zarządzania dietą",
