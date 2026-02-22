@@ -30,7 +30,7 @@ const DB_NAME = "dietApp";
 
 const transporter = nodemailer.createTransport({
   host: "smtp-relay.brevo.com",
-  port: 587,
+  port: 2525,
   secure: false,
   auth: {
     user: process.env.EMAIL_USER,
