@@ -272,6 +272,39 @@ app.get("/api/auth/verify", authenticateToken, async (req, res) => {
   }
 });
 
+app.post("/api/auth/change-password", authenticateToken, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(req.user.userId) });
+    if (!user) {
+      return res.status(404).json({ message: "Nie znaleziono użytkownika" });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ message: "Obecne hasło jest nieprawidłowe" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await db
+      .collection("users")
+      .updateOne(
+        { _id: new ObjectId(req.user.userId) },
+        { $set: { password: hashedPassword } },
+      );
+
+    res.json({ message: "Hasło zostało pomyślnie zmienione." });
+  } catch (error) {
+    console.error("Błąd zmiany hasła:", error);
+    res.status(500).json({ message: "Błąd serwera podczas zmiany hasła" });
+  }
+});
+
 // ------------------------------
 //         bmi i profil
 // ------------------------------
